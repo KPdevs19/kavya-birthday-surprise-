@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Kavya 🫶🏻✨</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Playfair Display for emotional serif headers, Inter for clean readability & Caveat for handwritten Polaroid captions -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    <!-- Canvas Confetti for celebratory bursts -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
+    <style>
+        /* Custom font pairings & base styling */
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #fff5f2 0%, #ffe6e2 35%, #fdf2e9 70%, #fce4ec 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            color: #3d2c2e;
+        }
+
+        h1, h2, .serif-font {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .handwriting-font {
+            font-family: 'Caveat', cursive;
+        }
+
+        /* Polaroid Card Styling */
+        .polaroid-card {
+            background: #ffffff;
+            padding: 12px 12px 22px 12px;
+            border-radius: 6px;
+            box-shadow: 0 12px 28px -8px rgba(180, 105, 115, 0.25), 0 2px 6px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(254, 205, 211, 0.5);
+            transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease;
+        }
+
+        .polaroid-tilt-1 { transform: rotate(-2deg); }
+        .polaroid-tilt-2 { transform: rotate(1.5deg); }
+        .polaroid-tilt-3 { transform: rotate(-1.5deg); }
+
+        .polaroid-card:hover {
+            transform: rotate(0deg) translateY(-6px) scale(1.02);
+            box-shadow: 0 20px 36px -10px rgba(212, 115, 125, 0.35);
+            z-index: 10;
+        }
+
+        /* Glassmorphism cards */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.72);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.85);
+            box-shadow: 0 12px 40px -10px rgba(212, 130, 130, 0.22);
+        }
+
+        .glass-vault-card {
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .glass-vault-card:hover {
+            transform: translateY(-4px);
+            background: rgba(255, 255, 255, 0.88);
+            box-shadow: 0 14px 30px -8px rgba(225, 138, 138, 0.28);
+            border-color: #f8bbd0;
+        }
+
+        /* Floating background particles */
+        @keyframes floatUp {
+            0% {
+                transform: translateY(100vh) scale(0.8) rotate(0deg);
+                opacity: 0;
+            }
+            15% {
+                opacity: 0.55;
+            }
+            85% {
+                opacity: 0.55;
+            }
+            100% {
+                transform: translateY(-15vh) scale(1.1) rotate(25deg);
+                opacity: 0;
+            }
+        }
+
+        .floating-particle {
+            position: fixed;
+            pointer-events: none;
+            z-index: 0;
+            animation: floatUp linear infinite;
+            user-select: none;
+        }
+
+        /* Smooth reveal transition */
+        .reveal-section {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity 0.9s ease-out, transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .reveal-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Pulse glow on primary CTA */
+        @keyframes softPulse {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(244, 114, 182, 0.45);
+            }
+            50% {
+                box-shadow: 0 0 0 14px rgba(244, 114, 182, 0);
+            }
+        }
+
+        .btn-glow {
+            animation: softPulse 2.5s infinite;
+        }
+
+        /* Modal backdrop & animation */
+        .modal-backdrop {
+            background: rgba(45, 28, 32, 0.45);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-backdrop.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-box {
+            transform: scale(0.92) translateY(16px);
+            transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .modal-backdrop.active .modal-box {
+            transform: scale(1) translateY(0);
+        }
+
+        /* Floating Toast Notification */
+        .toast-msg {
+            transform: translate(-50%, 24px);
+            opacity: 0;
+            transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+            pointer-events: none;
+        }
+
+        .toast-msg.show {
+            transform: translate(-50%, 0);
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="relative antialiased selection:bg-rose-200 selection:text-rose-900">
+
+    <!-- Container for subtle floating hearts and sparkles -->
+    <div id="particles-container" aria-hidden="true"></div>
+
+    <!-- Main Content Wrapper -->
+    <main class="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 py-10 sm:py-16 flex flex-col items-center">
+
+        <!-- 1. HERO / MIDNIGHT REVEAL SECTION -->
+        <header id="hero-section" class="w-full text-center py-8 sm:py-12 transition-all duration-700">
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/75 border border-rose-200/80 text-rose-700 text-xs sm:text-sm font-medium tracking-wide shadow-sm mb-6">
+                <span>To My Favorite Constant 🫶🏻🌟</span>
+            </div>
+
+            <h1 class="text-3xl sm:text-5xl font-bold text-stone-800 leading-tight tracking-tight mb-5 px-2">
+                Happy Birthday Kavya 🫶🏻✨
+            </h1>
+
+            <p class="text-stone-600 text-base sm:text-lg max-w-xl mx-auto mb-9 leading-relaxed">
+                Before the day gets busy and everyone else’s messages start pouring in, I made something small just for you.
+            </p>
+
+            <!-- Interactive Unwrap Button -->
+            <button id="unwrap-btn" type="button" class="btn-glow inline-flex items-center justify-center gap-2.5 px-7 py-4 rounded-2xl bg-gradient-to-r from-rose-500 via-pink-500 to-amber-500 text-white font-semibold text-base sm:text-lg shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 cursor-pointer">
+                <span>Tap to Unwrap Your Birthday Surprise 🎁</span>
+            </button>
+        </header>
+
+        <!-- HIDDEN SURPRISE CONTENT (Revealed smoothly on click) -->
+        <div id="surprise-content" class="hidden w-full space-y-12 sm:space-y-16 mt-4">
+
+            <!-- 2. MAIN EMOTIONAL BIRTHDAY LETTER CARD -->
+            <section id="letter-section" class="reveal-section glass-card rounded-3xl p-6 sm:p-10 relative overflow-hidden">
+                <!-- Subtle decorative corner glow -->
+                <div class="absolute -top-16 -right-16 w-44 h-44 bg-gradient-to-br from-rose-200/50 to-amber-200/40 rounded-full blur-2xl pointer-events-none"></div>
+                <div class="absolute -bottom-16 -left-16 w-44 h-44 bg-gradient-to-tr from-pink-200/50 to-orange-100/50 rounded-full blur-2xl pointer-events-none"></div>
+
+                <div class="relative z-10">
+                    <div class="flex items-center justify-between border-b border-rose-200/60 pb-4 mb-6">
+                        <span class="serif-font italic text-lg sm:text-xl text-rose-800 font-semibold">For you, today & always</span>
+                        <span class="text-xl" aria-hidden="true">💌</span>
+                    </div>
+
+                    <!-- Verbatim Birthday Paragraph -->
+                    <p class="text-stone-700 text-base sm:text-lg leading-relaxed sm:leading-loose font-normal">
+                        Happiest birthday to the person who is close to me one and only મારી બહેન, Kavya! 🥹❤️ You may be my little sister, but the place you hold in my life is something words will never be enough to explain. I hope you never doubt how special you are to me. I want to see you achieve everything you've ever dreamed of, smile without a reason, and live a life filled with all the happiness you deserve. And whenever life gets difficult, remember that you don't have to figure everything out alone because your big brother will always be right here, no matter what. 🫂💗 I'll always protect you, support you, annoy you and be your biggest cheerleader. Thank you for being such a beautiful part of my life. I genuinely feel lucky to have you. Happiest birthday, Kavya! Never stop being the amazing person you are.Love you loads, little one! 🎂🧿❤️
+                    </p>
+
+                    <!-- Interactive Action Buttons -->
+                    <div class="mt-8 pt-6 border-t border-rose-200/60 flex flex-wrap items-center justify-center sm:justify-between gap-3">
+                        <button id="hug-btn" type="button" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-rose-500 hover:bg-rose-600 text-white font-medium text-sm sm:text-base shadow-md hover:shadow-lg active:scale-95 transition-all cursor-pointer">
+                            <span>Send a Hug 🫂</span>
+                        </button>
+
+                        <button id="confetti-btn" type="button" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-white/90 hover:bg-white text-rose-700 border border-rose-200 font-medium text-sm sm:text-base shadow-sm hover:shadow active:scale-95 transition-all cursor-pointer">
+                            <span>Celebrate Again 🎉</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2.5 POLAROID MEMORY WALL SECTION -->
+            <section id="memory-wall-section" class="reveal-section w-full">
+                <div class="text-center mb-8">
+                    <span class="inline-block px-3.5 py-1 rounded-full bg-rose-100/80 border border-rose-200 text-rose-700 text-xs font-semibold uppercase tracking-wider mb-2">
+                        Memory Wall 📸
+                    </span>
+                    <h2 class="text-2xl sm:text-3xl font-bold text-stone-800">
+                        Snapshots of you ✨
+                    </h2>
+                </div>
+
+                <!-- 3-Card Polaroid Grid (Rendered cleanly via JS so clicking opens the lightbox) -->
+                <div id="polaroid-grid" class="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-5 px-2 sm:px-0">
+                    <!-- Polaroid cards injected via JavaScript -->
+                </div>
+            </section>
+
+            <!-- 3. INTERACTIVE "OPEN WHEN..." DIGITAL VAULT -->
+            <section id="vault-section" class="reveal-section w-full">
+                <div class="text-center mb-8">
+                    <span class="inline-block px-3.5 py-1 rounded-full bg-amber-100/80 border border-amber-200 text-amber-800 text-xs font-semibold uppercase tracking-wider mb-2">
+                        Digital Time Capsule
+                    </span>
+                    <h2 class="text-2xl sm:text-3xl font-bold text-stone-800">
+                        Your "Open When..." Vault 🔐✨
+                    </h2>
+                    <p class="text-stone-600 text-sm sm:text-base mt-2 max-w-md mx-auto">
+                        Tap any envelope whenever you need a reminder, a laugh, or a little backup.
+                    </p>
+                </div>
+
+                <!-- Grid of 5 Vault Cards -->
+                <div id="vault-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+                    <!-- Cards injected cleanly via JavaScript -->
+                </div>
+            </section>
+
+            <!-- 4. FOOTER -->
+            <footer class="reveal-section text-center pt-6 pb-8">
+                <p class="text-stone-500 text-sm sm:text-base font-medium">
+                    Always in your corner • Happy Birthday 🤍
+                </p>
+            </footer>
+
+        </div>
+    </main>
+
+    <!-- MODAL FOR "OPEN WHEN..." NOTE -->
+    <div id="note-modal" class="modal-backdrop fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <div class="modal-box glass-card bg-white/95 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl relative border border-rose-200">
+            <!-- Close Icon Button -->
+            <button id="close-modal-x" type="button" aria-label="Close note" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-rose-50 hover:bg-rose-100 text-rose-700 flex items-center justify-center transition-colors cursor-pointer">
+                ✕
+            </button>
+
+            <div class="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-gradient-to-br from-rose-100 to-amber-100 text-2xl mb-4 shadow-inner" id="modal-icon">
+                💌
+            </div>
+
+            <h3 id="modal-title" class="serif-font text-xl sm:text-2xl font-bold text-stone-800 mb-4 pr-6">
+                Open When...
+            </h3>
+
+            <!-- Optional Photo or Video Attachment Inside Envelope Modal -->
+            <div id="modal-photo-wrapper" class="hidden mb-4">
+                <div class="bg-white p-2.5 pb-3 rounded-2xl border border-rose-100 shadow-sm">
+                    <img id="modal-photo" src="" alt="Memory snapshot" class="w-full max-h-[60vh] object-contain rounded-xl bg-rose-50">
+                    <video id="modal-video" class="hidden w-full max-h-[60vh] rounded-xl bg-rose-50" autoplay loop playsinline preload="metadata" muted>
+                        Your browser does not support video playback.
+                    </video>
+                    <p id="modal-photo-caption" class="handwriting-font text-center text-lg sm:text-xl text-stone-600 mt-2">
+                        Caption goes here
+                    </p>
+                </div>
+            </div>
+
+            <div class="bg-rose-50/60 border border-rose-100 rounded-2xl p-4 sm:p-5 mb-6">
+                <p id="modal-body" class="text-stone-700 text-base leading-relaxed">
+                    Note content goes here.
+                </p>
+            </div>
+
+            <div class="flex justify-end">
+                <button id="close-modal-btn" type="button" class="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white font-medium text-sm sm:text-base shadow-md transition-all cursor-pointer">
+                    Keep It Safe 🤍
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FLOATING TOAST MESSAGE -->
+    <div id="toast" class="toast-msg fixed bottom-6 left-1/2 z-50 px-5 py-3 rounded-2xl bg-stone-800/95 text-white text-sm sm:text-base font-medium shadow-xl flex items-center gap-2 whitespace-nowrap">
+        <span>Hug received! Always got your back ❤️</span>
+    </div>
+
+    <!-- LIGHTBOX MODAL FOR POLAROID MEMORY WALL -->
+    <div id="polaroid-modal" class="modal-backdrop fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="polaroid-modal-caption">
+        <div class="modal-box bg-white p-4 sm:p-5 pb-6 rounded-2xl max-w-md w-full shadow-2xl relative border border-rose-100">
+            <button id="close-polaroid-x" type="button" aria-label="Close photo" class="absolute -top-3 -right-3 w-9 h-9 rounded-full bg-rose-500 hover:bg-rose-600 text-white shadow-md flex items-center justify-center transition-colors cursor-pointer">
+                ✕
+            </button>
+            <img id="polaroid-modal-img" src="" alt="Enlarged memory" class="w-full max-h-[65vh] object-cover rounded-xl bg-rose-50">
+            <div class="mt-4 text-center">
+                <p id="polaroid-modal-caption" class="handwriting-font text-2xl sm:text-3xl text-stone-800 font-bold">
+                    Caption
+                </p>
+                <p id="polaroid-modal-date" class="text-xs sm:text-sm text-rose-500 font-medium uppercase tracking-wider mt-1">
+                    Date / Location
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* ============================================================================
+         * 📸 HOW TO ADD YOUR REAL PHOTOS BEFORE DEPLOYING TO VERCEL:
+         * 1. Place your photo files in the EXACT SAME folder as this index.html file.
+         * 2. Name them cleanly (no spaces):
+         *    - Polaroid Wall:  memory1.jpg, memory2.jpg, memory3.jpg
+         *    - Envelope Notes: note1.jpg, note2.jpg, note3.jpg, note4.jpg, note5.jpg
+         * 3. Update the captions & dates below to match your real memories!
+         *    (If a file isn't added yet, a warm placeholder preview displays automatically.)
+         * ============================================================================ */
+
+        // Generates a clean SVG memory placeholder if local JPG files haven't been dropped in yet
+        function getFallbackPhotoDataUri(label, sublabel) {
+            const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="600" height="450" viewBox="0 0 600 450">
+                <defs>
+                    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#ffe4e6"/>
+                        <stop offset="50%" stop-color="#ffedd5"/>
+                        <stop offset="100%" stop-color="#fce7f3"/>
+                    </linearGradient>
+                </defs>
+                <rect width="600" height="450" fill="url(#g)"/>
+                <circle cx="300" cy="185" r="44" fill="#ffffff" fill-opacity="0.75"/>
+                <text x="300" y="198" font-size="38" text-anchor="middle" font-family="sans-serif">📸</text>
+                <text x="300" y="268" font-size="22" font-weight="600" fill="#881337" text-anchor="middle" font-family="sans-serif">${label}</text>
+                <text x="300" y="300" font-size="15" fill="#9f1239" fill-opacity="0.75" text-anchor="middle" font-family="sans-serif">${sublabel}</text>
+            </svg>`;
+            return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+        }
+
+        // Data for the 2 Polaroid Memory Wall cards
+        const polaroidMemories = [
+            {
+                // Replace with memory1.jpg in your folder
+                src: "memory1.jpg",
+                fallbackLabel: "Replace with memory1.jpg",
+                fallbackSub: "Drop your favorite photo in the same folder",
+                caption: "My favorite smile 🥰",
+                dateTag: "✨",
+                tiltClass: "polaroid-tilt-1"
+            },
+            {
+                // Replace with memory2.jpg in your folder
+                src: "memory2.jpg",
+                fallbackLabel: "Replace with memory2.jpg",
+                fallbackSub: "Drop your favorite photo in the same folder",
+                caption: "Best duo, forever 🫶🏻💪🏻",
+                dateTag: "✨",
+                tiltClass: "polaroid-tilt-2"
+            },
+        ];
+
+        // Data for the 5 "Open When..." Vault Cards (with optional photo attachments)
+        const vaultNotes = [
+            {
+                id: 1,
+                icon: "🎂",
+                tag: "Envelope #1",
+                title: "Open when it’s officially your birthday 🎂✨",
+                image: "note1.jpg", // Replace with note1.jpg (or set to null to hide photo)
+                imageCaption: "Here’s to another year of watching you shine ✨",
+                content: "Happy birthday to the sister my heart chose! Before the day gets busy and your phone blows up, I just wanted to remind you how lucky I am to have you in my corner. You’re getting older, hopefully a little wiser, and definitely stuck with me for life. Go celebrate yourself today—you deserve every bit of happiness coming your way."
+            },
+            {
+                id: 2,
+                icon: "🫂",
+                tag: "Envelope #2",
+                title: "Open when you’re having a rough day or feeling overwhelmed 🫂🤍",
+                image: "note2.jpg", // Replace with note2.jpg (or set to null to hide photo)
+                imageCaption: "Never forget how strong you are 🤍",
+                content: "Hey, take a deep breath for a second. Whatever is stressing you out right now is temporary, and you don't have to carry it all by yourself. Remember how many tough days you’ve already survived—you’re way stronger than you give yourself credit for. Call or text me whenever you're ready to rant, even if you just want to sit in silence. I’ve always got your back."
+            },
+            {
+                id: 3,
+                icon: "🥹",
+                tag: "Envelope #3",
+                title: "Open when you forget how much you mean to me 🥹❤️",
+                image: "note3.jpg", // Replace with note3.jpg (or set to null to hide photo)
+                imageCaption: "Irreplaceable from day one ❤️",
+                content: "If you ever sit and wonder what your place is in my life, let me make it completely clear: you are irreplaceable. Out of all the people in this world, having you as my sister—purely by heart and by choice—is something I never take for granted. You’ve changed my life just by being in it, and nothing could ever replace the bond we share."
+            },
+            {
+                id: 4,
+                icon: "🤍",
+                tag: "Envelope #4",
+                title: "Open when you feel alone or need someone in your corner 🤍✨",
+                image: "note4.mp4", // Replace with note4.jpg (or set to null to hide photo)
+                imageCaption: "Always one call away, no matter what 🫂",
+                content: "No matter what phase of life you're in, how busy things get, or how far apart we might be, you never have to walk through anything alone. I am always just one call or text away, ready to listen, protect you, and stand right beside you. You will always have a home in our bond."
+            },
+            {
+                id: 5,
+                icon: "🌟",
+                tag: "Envelope #5",
+                title: "Open when you want to know my biggest wish for you 🌟💖",
+                image: "note5.mp4", // Replace with note5.jpg (or set to null to hide photo)
+                imageCaption: "Always cheering the loudest for you 🌟",
+                content: "My biggest wish for you isn't just for today—it's for every single year ahead of you. I hope you always receive the same warmth, loyalty, and pure love that you give to everyone around you. I hope you never settle for less than you deserve, and I promise I'll always be right behind you, cheering the loudest as you win in life."
+            }
+        ];
+
+        // Generate subtle floating background hearts & sparkles
+        function createFloatingParticles() {
+            const container = document.getElementById('particles-container');
+            if (!container) return;
+
+            const symbols = ['🤍', '✨', '🌸', '💖', '⭐'];
+            const particleCount = 18;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('span');
+                particle.className = 'floating-particle';
+                particle.textContent = symbols[i % symbols.length];
+
+                const leftPos = Math.random() * 100;
+                const duration = 12 + Math.random() * 14;
+                const delay = Math.random() * -20;
+                const size = 14 + Math.random() * 12;
+
+                particle.style.left = `${leftPos}vw`;
+                particle.style.animationDuration = `${duration}s`;
+                particle.style.animationDelay = `${delay}s`;
+                particle.style.fontSize = `${size}px`;
+
+                container.appendChild(particle);
+            }
+        }
+
+        // Trigger full celebratory confetti burst
+        function triggerCelebrationConfetti() {
+            if (typeof confetti !== 'function') return;
+
+            const colors = ['#f43f5e', '#fb7185', '#f59e0b', '#fbcfe8', '#fde68a'];
+            confetti({
+                particleCount: 75,
+                spread: 80,
+                origin: { y: 0.65 },
+                colors
+            });
+
+            setTimeout(() => {
+                confetti({
+                    particleCount: 45,
+                    angle: 60,
+                    spread: 55,
+                    origin: { x: 0, y: 0.7 },
+                    colors
+                });
+                confetti({
+                    particleCount: 45,
+                    angle: 120,
+                    spread: 55,
+                    origin: { x: 1, y: 0.7 },
+                    colors
+                });
+            }, 220);
+        }
+
+        // Render the 3 Polaroid Memory Wall Cards
+        function renderPolaroidWall() {
+            const grid = document.getElementById('polaroid-grid');
+            grid.innerHTML = '';
+
+            polaroidMemories.forEach((mem) => {
+                const fallbackUri = getFallbackPhotoDataUri(mem.fallbackLabel, mem.fallbackSub);
+                const card = document.createElement('button');
+                card.type = 'button';
+                card.className = `polaroid-card ${mem.tiltClass} text-left cursor-pointer focus:outline-none focus:ring-2 focus:ring-rose-300`;
+
+                card.innerHTML = `
+                    <div class="w-full aspect-[4/3] overflow-hidden rounded bg-rose-50 mb-3">
+                        <img src="${mem.src}" alt="${mem.caption || 'A favorite memory'}" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='${fallbackUri}';">
+                    </div>
+                    <p class="handwriting-font text-xl sm:text-2xl text-stone-800 leading-tight text-center px-1">
+                        ${mem.caption || 'A memory to keep close 💖'}
+                    </p>
+                    <p class="text-[11px] text-rose-400 font-medium uppercase tracking-wider text-center mt-1.5">
+                        ${mem.dateTag}
+                    </p>
+                `;
+
+                card.addEventListener('click', () => {
+                    const imgEl = card.querySelector('img');
+                    openPolaroidLightbox(imgEl.src, mem.caption, mem.dateTag);
+                });
+
+                grid.appendChild(card);
+            });
+        }
+
+        // Lightbox Controls for Polaroid Wall
+        const polaroidModal = document.getElementById('polaroid-modal');
+        const polaroidModalImg = document.getElementById('polaroid-modal-img');
+        const polaroidModalCaption = document.getElementById('polaroid-modal-caption');
+        const polaroidModalDate = document.getElementById('polaroid-modal-date');
+
+        function openPolaroidLightbox(src, caption, dateTag) {
+            polaroidModalImg.src = src;
+            polaroidModalCaption.textContent = caption;
+            polaroidModalDate.textContent = dateTag;
+            polaroidModal.classList.add('active');
+        }
+
+        function closePolaroidLightbox() {
+            polaroidModal.classList.remove('active');
+        }
+
+        document.getElementById('close-polaroid-x').addEventListener('click', closePolaroidLightbox);
+        polaroidModal.addEventListener('click', (e) => {
+            if (e.target === polaroidModal) closePolaroidLightbox();
+        });
+
+        // Render the 5 "Open When..." Vault Cards
+        function renderVaultCards() {
+            const grid = document.getElementById('vault-grid');
+            grid.innerHTML = '';
+
+            vaultNotes.forEach((note, index) => {
+                const card = document.createElement('button');
+                card.type = 'button';
+                // Make the 5th card span full width on sm+ screens for balanced symmetry
+                const spanClass = index === 4 ? 'sm:col-span-2 sm:max-w-md sm:mx-auto sm:w-full' : '';
+                
+                card.className = `glass-vault-card text-left rounded-3xl p-5 sm:p-6 flex items-start gap-4 cursor-pointer group ${spanClass}`;
+                card.innerHTML = `
+                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-rose-100 to-amber-100 flex items-center justify-center text-2xl shrink-0 group-hover:scale-110 transition-transform shadow-sm">
+                        ${note.icon}
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center justify-between gap-2 mb-1">
+                            <span class="text-xs font-semibold uppercase tracking-wider text-rose-500">${note.tag}</span>
+                            <span class="text-xs text-stone-400 group-hover:text-rose-500 transition-colors">Tap to open →</span>
+                        </div>
+                        <h3 class="font-semibold text-stone-800 text-base sm:text-lg leading-snug">
+                            ${note.title}
+                        </h3>
+                    </div>
+                `;
+
+                card.addEventListener('click', () => openNoteModal(note));
+                grid.appendChild(card);
+            });
+        }
+
+        // Modal Controls
+        const modal = document.getElementById('note-modal');
+        const modalIcon = document.getElementById('modal-icon');
+        const modalTitle = document.getElementById('modal-title');
+        const modalBody = document.getElementById('modal-body');
+        const modalPhotoWrapper = document.getElementById('modal-photo-wrapper');
+        const modalPhoto = document.getElementById('modal-photo');
+        const modalVideo = document.getElementById('modal-video');
+        const modalPhotoCaption = document.getElementById('modal-photo-caption');
+
+        function openNoteModal(note) {
+            modalIcon.textContent = note.icon;
+            modalTitle.textContent = note.title;
+            modalBody.textContent = note.content;
+
+            // Show the attachment using the element that matches its file type.
+            modalVideo.pause();
+            modalVideo.removeAttribute('src');
+            modalVideo.load();
+            modalVideo.classList.add('hidden');
+            modalPhoto.classList.add('hidden');
+
+            if (note.image) {
+                const isVideo = /\.(mp4|webm|ogg)(?:$|[?#])/i.test(note.image);
+                if (isVideo) {
+                    modalVideo.src = note.image;
+                    modalVideo.classList.remove('hidden');
+                    modalVideo.play().catch(() => {
+                        // Autoplay can still be blocked by browser settings.
+                    });
+                } else {
+                    const fallbackUri = getFallbackPhotoDataUri(`Replace with ${note.image}`, 'Add this photo to your site folder');
+                    modalPhoto.onerror = function () {
+                        this.onerror = null;
+                        this.src = fallbackUri;
+                    };
+                    modalPhoto.src = note.image;
+                    modalPhoto.classList.remove('hidden');
+                }
+                modalPhotoCaption.textContent = note.imageCaption || '';
+                modalPhotoWrapper.classList.remove('hidden');
+            } else {
+                modalPhotoWrapper.classList.add('hidden');
+            }
+
+            modal.classList.add('active');
+
+            if (typeof confetti === 'function') {
+                confetti({
+                    particleCount: 35,
+                    spread: 60,
+                    origin: { y: 0.7 },
+                    colors: ['#f43f5e', '#fb7185', '#fbcfe8', '#fde68a']
+                });
+            }
+        }
+
+        function closeNoteModal() {
+            modal.classList.remove('active');
+            modalVideo.pause();
+            modalVideo.currentTime = 0;
+        }
+
+        document.getElementById('close-modal-x').addEventListener('click', closeNoteModal);
+        document.getElementById('close-modal-btn').addEventListener('click', closeNoteModal);
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeNoteModal();
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                if (modal.classList.contains('active')) closeNoteModal();
+                if (polaroidModal.classList.contains('active')) closePolaroidLightbox();
+            }
+        });
+
+        // Toast Helper
+        let toastTimeout;
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.querySelector('span').textContent = message;
+            toast.classList.add('show');
+
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3400);
+        }
+
+        // Unwrap Surprise Interaction
+        const unwrapBtn = document.getElementById('unwrap-btn');
+        const surpriseContent = document.getElementById('surprise-content');
+        let isUnwrapped = false;
+
+        unwrapBtn.addEventListener('click', () => {
+            triggerCelebrationConfetti();
+
+            if (!isUnwrapped) {
+                isUnwrapped = true;
+                unwrapBtn.classList.remove('btn-glow');
+                unwrapBtn.innerHTML = '<span>Surprise Unwrapped! ✨ Scroll Down 👇</span>';
+                
+                surpriseContent.classList.remove('hidden');
+                
+                // Staggered smooth reveal of sections
+                const sections = surpriseContent.querySelectorAll('.reveal-section');
+                sections.forEach((sec, idx) => {
+                    setTimeout(() => {
+                        sec.classList.add('visible');
+                    }, 150 + idx * 220);
+                });
+
+                // Smooth scroll to the letter card
+                setTimeout(() => {
+                    document.getElementById('letter-section').scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }, 300);
+            }
+        });
+
+        // Hug & Celebrate Buttons
+        document.getElementById('hug-btn').addEventListener('click', () => {
+            triggerCelebrationConfetti();
+            showToast('Hug received! Always got your back ❤️');
+        });
+
+        document.getElementById('confetti-btn').addEventListener('click', () => {
+            triggerCelebrationConfetti();
+        });
+
+        // Initialize on load
+        window.addEventListener('DOMContentLoaded', () => {
+            createFloatingParticles();
+            renderPolaroidWall();
+            renderVaultCards();
+        });
+    </script>
+</body>
+</html>
